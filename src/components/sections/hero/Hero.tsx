@@ -51,8 +51,8 @@ export default function Hero() {
 
             {/* Desktop Rotating Button */}
             <div
-                className="hidden lg:block absolute z-40 pointer-events-auto"
-                style={{ top: '75%', left: '80%', transform: 'translate(-50%, -50%)', visibility: showDesktopButton ? 'visible' : 'hidden' }}
+                className="hidden sm:block absolute z-40 pointer-events-auto"
+                style={{ top: '75%', left: '70%', transform: 'translate(-50%, -50%)', visibility: showDesktopButton ? 'visible' : 'hidden' }}
             >
                 <RotatingButton
                     texts={["PROJECTS", "WORK", "RÉSUMÉ", "CONTACT"]}

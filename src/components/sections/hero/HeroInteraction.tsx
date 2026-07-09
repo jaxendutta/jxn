@@ -54,6 +54,42 @@ function buildLetterStates(): LetterState[] {
 // Total letter count
 const TOTAL_LETTERS = ALL_CHARS.length;
 
+// ── Wordmark arc ──────────────────────────────────────────────────────────
+// Total sweep of the arch in degrees — the single knob for how curved the
+// word sits. 180 would be a full semicircle; keep it well under for a
+// gentle crest.
+const ARC_DEGREES = 64;
+// Approximate advance width of one Mignova char, in em (matches the width
+// heuristic in the font-size calculation below)
+const CHAR_WIDTH_EM = 0.65;
+// Extra spread between arched letters, in em
+const LETTER_GAP_EM = 0.1;
+// Effective per-letter advance along the arc's chord
+const LETTER_ADVANCE_EM = CHAR_WIDTH_EM + LETTER_GAP_EM;
+
+// Radius (in em) such that the word's width spans the chord of the arc
+function arcRadiusEm(n: number): number {
+    const halfRad = ((ARC_DEGREES / 2) * Math.PI) / 180;
+    return (n * LETTER_ADVANCE_EM) / (2 * Math.sin(halfRad));
+}
+
+// Rotation + vertical drop placing letter i of n on the arc's crest
+function arcTransform(i: number, n: number): string {
+    if (n < 2) return "none";
+    const theta = (i / (n - 1) - 0.5) * ARC_DEGREES;
+    const rad = (theta * Math.PI) / 180;
+    const dropEm = arcRadiusEm(n) * (1 - Math.cos(rad));
+    return `translateY(${dropEm.toFixed(3)}em) rotate(${theta.toFixed(2)}deg)`;
+}
+
+// Deepest drop (the outermost letters) — translateY is visual-only, so the
+// row needs this much extra layout height to keep the byline clear
+function arcMaxDropEm(n: number): number {
+    if (n < 2) return 0;
+    const halfRad = ((ARC_DEGREES / 2) * Math.PI) / 180;
+    return arcRadiusEm(n) * (1 - Math.cos(halfRad));
+}
+
 export default function HeroInteraction() {
     const { theme } = useTheme();
     const [letters, setLetters] = useState<LetterState[]>(buildLetterStates);
@@ -239,7 +275,7 @@ export default function HeroInteraction() {
             const h = window.innerHeight;
             // Width: subtract px-4 padding (32px), target 90%, ~0.65× em per char
             const longestWordLength = Math.max(...NAME_WORDS.map((w) => w.length));
-            const fromWidth = ((w - 32) * 0.9) / (longestWordLength * 0.65);
+            const fromWidth = ((w - 32) * 0.9) / (longestWordLength * LETTER_ADVANCE_EM);
             // Height: 3 lines × fontSize must fit in 60% of viewport height
             const fromHeight = (h * 0.6) / NAME_WORDS.length;
             // Clamp to a minimum of 48px for readability
@@ -339,21 +375,36 @@ export default function HeroInteraction() {
 
     return (
         <div
-            className={`w-full flex flex-col leading-none px-4 text-center select-none ${mignovaFont}`}
+            className={`w-full flex flex-col leading-none px-4 text-center select-none ${mignovaFont} mt-12 md:mt-0`}
             style={{ fontSize }}
         >
             {NAME_WORDS.map((word, wordIndex) => (
-                <span key={wordIndex} className="flex justify-center">
-                    {word
-                        .split("")
-                        .map((char) => renderGlyphLetter(char, flatIndex++))}
+                <span
+                    key={wordIndex}
+                    className="flex justify-center"
+                    style={{
+                        columnGap: `${LETTER_GAP_EM}em`,
+                        paddingBottom: `${arcMaxDropEm(word.length).toFixed(3)}em`,
+                    }}
+                >
+                    {word.split("").map((char, i) => (
+                        // Arc wrapper — framer-motion owns the inner span's
+                        // transform, so the arch lives on its own element
+                        <span
+                            key={i}
+                            className="inline-block"
+                            style={{ transform: arcTransform(i, word.length) }}
+                        >
+                            {renderGlyphLetter(char, flatIndex++)}
+                        </span>
+                    ))}
                 </span>
             ))}
 
             {/* Byline
                 NOTE: margins here are in the byline's own em (0.16 × hero size) */}
             <div
-                className={`${csDeviousStippledFont} flex flex-col gap-1 md:gap-3 items-center mt-16 text-muted-foreground tracking-wider`}
+                className={`${csDeviousStippledFont} flex flex-col gap-1 md:gap-3 items-center text-muted-foreground tracking-wider`}
             >
                 <span className={`text-base md:text-3xl`}>
                     By
