@@ -1,3 +1,0 @@
-# LaTeX Output — ignore aux files, track compiled PDF
-**/out/*
-!**/out/*.pdf

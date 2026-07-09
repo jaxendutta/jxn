@@ -5,7 +5,6 @@ import ContactSection from "@/components/sections/contact/ContactSection";
 import Hero from "@/components/sections/hero/Hero";
 import ProjectsSection from "@/components/sections/project/ProjectsSection";
 import WorkSection from "@/components/sections/work/WorkSection";
-import PapersSection from "@/components/sections/papers/PapersSection";
 import Footer from "@/components/layout/Footer";
 import Navbar from "@/components/layout/Navbar";
 
@@ -30,10 +29,6 @@ export default function Home() {
 
                 <Suspense fallback={<SectionFallback label="work experience" />}>
                     <WorkSection />
-                </Suspense>
-
-                <Suspense fallback={<SectionFallback label="papers" />}>
-                    <PapersSection limit={3} showLink={true} />
                 </Suspense>
 
                 <ContactSection />

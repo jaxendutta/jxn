@@ -6,13 +6,13 @@ import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import BottomBar from "@/components/layout/BottomBar";
 
 export const metadata: Metadata = {
-    metadataBase: new URL('https://anirban.ca'),
+    metadataBase: new URL('https://jxn.anirban.ca'),
     title: {
-        default: "Jaxen Dutta",
-        template: "%s ✧ Jaxen Dutta",
+        default: "JXN",
+        template: "%s ✧ JXN",
     },
     description:
-        "Personal portfolio website for Anirban (Jaxen) Dutta - UX/UI Engineer, HCI Researcher, Web Designer, App Developer",
+        "JXN — products and projects built by Jaxen Dutta: apps, tools, and interactive web experiences",
     keywords: [
         "UX/UI",
         "Web Design",
@@ -26,11 +26,11 @@ export const metadata: Metadata = {
     openGraph: {
         type: "website",
         locale: "en_US",
-        url: "https://anirban.ca",
-        title: "Jaxen Dutta",
+        url: "https://jxn.anirban.ca",
+        title: "JXN",
         description:
-            "UX/UI Engineer, HCI Researcher, Web Designer, and App Developer portfolio showcasing innovative digital creations and technical expertise.",
-        siteName: "Jaxen Dutta ✧ Portfolio",
+            "Products and projects built by Jaxen Dutta: apps, tools, and interactive web experiences.",
+        siteName: "JXN ✧ Jaxen Dutta",
         // Adding a transparent pixel prevents the crawler from scraping your project images
         images: [
             {
@@ -42,8 +42,8 @@ export const metadata: Metadata = {
     },
     twitter: {
         card: "summary",
-        title: "Jaxen Dutta ✧ Portfolio",
-        description: "UX/UI Engineer, HCI Researcher, Web Designer, and App Developer",
+        title: "JXN ✧ Jaxen Dutta",
+        description: "Products and projects built by Jaxen Dutta",
     }
 };
 

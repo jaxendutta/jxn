@@ -72,7 +72,7 @@ export default async function Image() {
                             fontFamily: codeFamily,
                         }}
                     >
-                        anirban.ca
+                        jxn.anirban.ca
                     </div>
                 </div>
             </div>
