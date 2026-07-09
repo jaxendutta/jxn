@@ -6,7 +6,7 @@ const UA = 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_8; de-at) AppleWebKit
 
 function loadLocalFont(relativePath: string): ArrayBuffer | undefined {
     try {
-        const buf = readFileSync(join(process.cwd(), relativePath));
+        const buf = readFileSync(join(/*turbopackIgnore: true*/ process.cwd(), relativePath));
         return buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength) as ArrayBuffer;
     } catch {
         return undefined;
@@ -56,7 +56,7 @@ export async function loadOgFonts() {
 
 export function getFaviconSrc(): string | undefined {
     try {
-        const buffer = readFileSync(join(process.cwd(), 'src/app/favicon.png'));
+        const buffer = readFileSync(join(/*turbopackIgnore: true*/ process.cwd(), 'src/app/favicon.png'));
         return `data:image/png;base64,${buffer.toString('base64')}`;
     } catch {
         return undefined;
@@ -65,7 +65,7 @@ export function getFaviconSrc(): string | undefined {
 
 export function getProjectImageSrc(projectId: string): string | undefined {
     try {
-        const buffer = readFileSync(join(process.cwd(), 'public', `${projectId}.png`));
+        const buffer = readFileSync(join(/*turbopackIgnore: true*/ process.cwd(), 'public', `${projectId}.png`));
         return `data:image/png;base64,${buffer.toString('base64')}`;
     } catch {
         return undefined;
